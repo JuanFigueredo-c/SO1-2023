@@ -1,0 +1,52 @@
+EJERCICIO 8
+
+Para los diferentes testeos de las distintas funciones, se midio el tiempo de ejecucion de cada 
+programa con multiples procesadores y con las siguientes cantidades de visitantes: 200.000, 2.000.000 y 20.000.000
+
+a) Sin sincronizacion
+El problema del jardin ornamental sin sincronizacion sufre de tanto el problema de la exclusion mutua como 
+el de la desincronizacion de la memoria por lo que el resultado del programa es erroneo.
+Los tiempos de ejecucion medidios fueron
+- 0m0,003s para una cantidad de 200.000
+- 0m0,015s para una cantidad de 2.000.000
+- 0m0,094s para una cantidad de 20.000.000
+
+b) Algoritmo de Peterson
+Al aplicar el algoritmo de peterson, se resuelve el problema de la exclusion mutua, pero persiste el problema 
+de la desincronizacion de la memoria.
+Los tiempos fueron:
+- 0m0,015s para 200.000
+- 0m0,114s para 2.000.000
+- 0m1,070s para 20.000.000
+Notemos que los tiempos son mas grandes que en la solucion sin sincronizacion, esto tiene sentido ya que en el 
+algoritmo de peterson debemos esperar a que un hilo salga de la region critica para poder entrar.
+
+c) Implementando incl
+Si reemplazamos el algoritmo de Peterson con la llamada a la funcion incl (con el argumento "lock" para mantener 
+la atomicidad en la ejecucion con multiples procesadores) podemos resolver los problemas de Peterson, por lo que los 
+resultados obtenidos son correctos.
+Los tiempos medidos fueron:
+- 0m0,010s para 200.000
+- 0m0,055s para 2.000.000
+- 0m0,450s para 20.000.000
+Veamos que los tiempos en comparacion con la implementacion de Peterson, sonmenores para valores de visitantes 
+mas grandes. Podemos intuir que esto se debe a que reemplazamos todas operaciones del algoritmo por una unica 
+instruccion de assembler.
+
+d) Implementando pthread_mutex_t
+Al reemplazar el algoritmo de Peterson por la implementacion de pthread_mutex en el programa podemos resolver los 
+problemas de mutex y desincronizacion de la memoria, por lo que el programa funcionara correctamente.
+Los tiempos observados fueron:
+- 0m0,017s para 200.000
+- 0m0,119s para 2.000.000
+- 0m1,116s para 20.000.000
+Mediante estos resultados concluimos que la diferencia de performance entre el algoritmo de Peterson no es 
+significativa, por lo que podriamos decir que realmente no hay una mejora.
+
+e) Utilizando un solo molinete sin multithreading
+Al implementar un unico molinete, y no utilizar multiples hilos, el problema se resuelve secuencialmente y no habra 
+concurrencia. De este modo no existiran problemas de exclusion mutua ni desincronizacion de la memoria. 
+Los tiempos fueron:
+- 0m0,003s para 200.000
+- 0m0,011s para 2.000.000
+- 0m0,054s para 20.000.000

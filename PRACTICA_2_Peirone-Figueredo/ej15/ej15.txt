@@ -1,0 +1,20 @@
+EJERCICIO 15
+
+La implementacion de Lamport es mas lenta que la implementacion con mutex de POSIX y considerablemente
+mas lenta que la version del jardin ornamental sin sincronizacion. Esto se debe a los niveles de espera
+que mantiene el algoritmo de Lamport, los cuales se realizan por cada "visitante" del jardin ornamental.
+
+El uso de memoria de la implementacion del algoritmo de Lamport supone un mayor uso de memoria
+comparado a la implementacion de Peterson y con los programas que hacen uso de los mutex de POSIX
+debido al uso de mas threads. Para cada thread se guarda en memoria el estado de los registros junto
+con el stack, para que se pueda restaurar el estado de la CPU cuando dicho hilo vuelva a ser ejecutado
+por el procesador. No consideramos que el uso de memoria requerido por el algoritmo en si sea alto, y con
+esto nos referimos a memoria de arrays y flags que se usan para implementarlo.
+
+Como problema al implementar este algoritmo en una libreria vemos que la implementacion requiere de dos cosas:
+ - Cantidad fija de threads. Esto se debe saber a la hora de hacer locks y unlocks debido al sistema de turnos que
+   implementa este algoritmo.
+ - La realizacion de locks y unlocks requiere de un argumento, el id del thread, lo cual es necesario ya que el
+   algoritmo de Lamport requiere saber quien es aquel que recibe o suelta el turno. Esto puede resultar un
+   invconveniente para una implementacion de API o libreria, ya que quita flexibilidad al uso de locks y unlocks
+

@@ -1,0 +1,10 @@
+No lo es, ya que por defecto, c mantiene un buffer intermedio para los archivos,
+y asi evitar tener que hacer una llamada al sistema cada vez que se quiere leer o
+escribir de este. Por esta misma razon, getchar() no es una llamada al sistema, sino
+que lee de este buffer de a un caracter, y cuando el buffer se ha leido recien ahi
+se produce una lectura del archivo mediante read() para rellenar el buffer.
+
+ungetc sobreescribe la ultima posicion del buffer leida con el caracter proveido
+como argumento. Su funcion es facilitar la lectura y parseo de un archivo, permitiendo
+retroceder en el buffer cuando asi se lo desee.
+

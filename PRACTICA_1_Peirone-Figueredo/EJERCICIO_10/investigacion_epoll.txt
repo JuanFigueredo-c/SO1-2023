@@ -1,0 +1,18 @@
+La funcion epoll, crea, mediante la funcion 'epoll_create' una estructura de datos en el kernel del sistema operativos
+que se encargara de controlar si los files descriptors que almacena han producido un evento.
+Para poder agregar (o eliminar) un file descriptors que queramos controlar, debemos utilizar la funcion 'epoll_ctl' que se
+encargara modificar la estructura creada previamente. 
+Cuando agregamos un file descriptor a un epoll, debemos especificar el tipo (o los tipos) de eventos que queremos controlar
+de ese file descriptor, por ejemplo, si queremos ver si el file descriptor esta listo para ser escrito, controlaremos el 
+evento 'EPOLLIN', si en cambio esta listo para ser leido, utilizamos 'EPOLLOUT'.
+De este modo conseguimos una estructura epoll que contiene todos los file descriptor que queremos controlar. Solo queda
+utilizar la funcion 'epoll_wait', que bloqueará la ejecucion del codigo hasta que alguno de los file descriptors que 
+pertenezcan al epoll produzcan algun evento de los que se esta controlando, o hasta que pase un tiempo de timeout.
+Cuando se recibe un evento, se reanuda la ejecucion del codigo y se almacenan tanto la cantidad de file descriptors 
+disponibles como un array de estos file descriptors.
+La ventaja que trae utilizar epoll es que se puede distinguir que file descriptor produjo un evento y se puede programar
+una respuesta posible diferente para cada uno. Esto se puede aprovechar en el servidor del ejercicio para poder identificar
+cuando el listening socket (lsock) produce un evento, es decir cuando un cliente se quiere conectar al servidor, y de esta manera
+poder aceptar el cliente, mediante 'accept' solamente cuando se necesite y por lo tanto no bloquear el programa. Tambien podemos
+controlar los files descriptors de los clientes y a medida que van creando eventos ir manejandolos por separado, esto nos evita
+que debamos hacer forks y utilizar memoria compartida, ya que manejamos a todos los clientes en un mismo proceso.

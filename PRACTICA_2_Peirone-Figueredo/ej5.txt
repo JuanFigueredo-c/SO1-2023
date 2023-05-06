@@ -1,0 +1,26 @@
+EJERCICIO 5
+
+a) Si consideramos el problema del jardín ornamental con un solo procesador es claro que el problema de store 
+buffering ya no existe, ya que al usar un unico procesador, usamos una unica cache y por lo tanto no puede haber
+desincronizacion de la memoria. Sin embargo el problema de la exclusion mutua sigue existiendo ya que se puede dar 
+que ambos hilos accedan al mismo tiempo a la region critica, alterando el resultado final del programa.
+
+b) Al implementar el Algoritmo de Peterson, se resuelve el problema de la exclusion mutua y por lo tanto ya no 
+ocurre puede darse que mas de un thread esta en la región critica a la vez.
+Si seguimos ejecutando al Algoritmo de Peterson con una solo procesador, no es necesario incluir 
+barreras de memoria, ya que seguimos con una sola memoria cache. Además, al ser un solo procesador nos aseguramos 
+que cualquier optimizacion que realice el compilador no nos afectará en la ejecucion del programa.
+
+c) Si para el incremento, reemplazamos el Algoritmo de Peterson por la llamada a la funcion "incl", no nos encontraremos 
+con ningun error y el programa se ejecutará correctamente, esto es por que cuando se trata de un solo procesador, la instruccion en 
+assembler de la arquitectura x86_64 es átomica, lo que significa que durante su ejecución, ningun otra instruccion 
+puede ejecutarse, por lo que no habra problema de exclusion mutua entre los hilos.
+
+d) Al utilizar la implementacion de incl con varios procesadores, nos damos cuenta que el resultado no es correcto. 
+Esto se debe a que al ser multiples procesadores, la instruccion incl pierde su propiedad de atomicidad por lo 
+que ahora incluir la instruccion no implica que se respete la region critica, lo que altera el resultado final.
+
+e) Si utilizamos la implementacion de la funcion incl que incluye el argumento "lock" conseguimos generar un mutex 
+tal que nos resuelva el problema del acceso simultaneo a la region critica, por lo que la nueva implementacion deincl 
+funcionara para multiples procesadores.
+  

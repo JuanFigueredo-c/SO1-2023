@@ -1,0 +1,6 @@
+Ejercicio 10 i)
+El comando cd no se puede implementar mediante un programa, ya que el trabajo de
+este es modificar una variable que mantiene la shell que lo usa. Por esto, se implementa
+mediante un built-in, esto es, cuando la shell parsea un comando y encuentra un "cd", lo que hace es
+modificar el estado de la shell (la variable del directorio actual en que se esta trabajando).
+
