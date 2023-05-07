@@ -11,11 +11,14 @@ typedef struct {
     int** stack;
     int index;
     sem_t sem;
+    int limit;
 } CStack;
 
 CStack *conc_stack_init (int stack_size);
 
 int isEmpty(CStack *cstack);
+
+int isFull(CStack *cstack);
  
 void push(CStack *cstack, int* data);
  
@@ -31,4 +34,7 @@ void conc_push(CStack *cstack, int* data);
 
 void conc_stack_destroy(CStack* cstack);
 
+int conc_isEmpty(CStack *cstack);
+
+int conc_isFull(CStack *cstack);
 #endif /* CONCURRENT_STACK_H */

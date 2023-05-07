@@ -1,4 +1,4 @@
-// C program for linked list implementation of stack
+
 #include <limits.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -6,13 +6,15 @@
 #include <pthread.h>
 #include <assert.h>
 
-// source: https://www.geeksforgeeks.org/stack-data-structure-introduction-program/
- 
 
 int isEmpty(CStack* cstack) {
     return (cstack->index == 0);
 }
- 
+
+int isFull(CStack* cstack) {
+    return ((cstack->index) - 1) == (cstack->limit);
+}
+
 void push(CStack* cstack, int* data) {
     cstack->stack[cstack->index] = data;
     cstack->index ++;
@@ -50,6 +52,7 @@ CStack *conc_stack_init (int stack_size) {
     sem_init(&cstack->sem,0,1);
     cstack->stack = malloc(sizeof(int*) * stack_size);
     cstack->index = 0;
+    cstack->limit = stack_size;
     return cstack;
 }
 
@@ -66,3 +69,16 @@ int* conc_pop(CStack *cstack) {
     return item;
 }
 
+int conc_isEmpty(CStack *cstack) {
+    sem_wait(&cstack->sem);
+    int b = isEmpty(cstack);
+    sem_post(&cstack->sem);
+    return b;
+}
+
+int conc_isFull(CStack *cstack) { 
+    sem_wait(&cstack->sem);
+    int b = isFull(cstack);
+    sem_post(&cstack->sem);
+    return b;
+}
