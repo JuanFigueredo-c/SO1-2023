@@ -37,7 +37,7 @@ int _cqueue_full_nc(CQueue cqueue) {
 int cqueue_empty(CQueue cqueue) {
   int b;
   sem_wait(&cqueue->lock);
-  cqueue->top == cqueue->last;
+  b = cqueue->top == cqueue->last;
   sem_post(&cqueue->lock);
   return b;
 }
