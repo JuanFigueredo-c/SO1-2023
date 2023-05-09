@@ -14,10 +14,13 @@ int cqueue_empty(CQueue cqueue);
 
 int cqueue_full(CQueue cqueue);
 
-// Concurrent popping out of stack, ensures a thread safe pop
+// Concurrent checking first element of queue, ensures a thread safe top
+void* cqueue_ctop(CQueue cqueue);
+
+// Concurrent popping out of queue, ensures a thread safe pop
 void* cqueue_cpop(CQueue cqueue);
 
-// Concurrent pushing to stack, ensures a thread safe push 
+// Concurrent pushing to queue, ensures a thread safe push 
 void cqueue_cpush(CQueue cqueue, void* data);
 
 void cqueue_destroy(CQueue cqueue);
