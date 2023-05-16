@@ -1,0 +1,15 @@
+EJERCICIO 6 
+PEIRONE - FIGUEREDO
+
+a) En esta implementacion puede ocurrir un deadlock en el caso en el que
+al liberarse el primer recurso, un proceso (fumador) lo "captura" y habilita el semaforo
+correspondiente a el recurso dado. Sin embargo, al liberarse el segundo recurso,se da
+que mas de un proceso necesita el recurso. Si algun otro proceso logra quedarse con el recurso
+antes que el proceso que capturo el primer recurso anteriormente, habra un deadlock ya que no habran
+mas recursos para liberar  y todos los fumadores estan esperando un segundo recurso.
+
+b) Tras cualquier posible reordenamiento de los recursos que piden los fumadores, siempre
+se llega a que hay al menos dos fumadores que piden en primer lugar distintos recursos. Esto es,
+f1 pide primero r1 y f2 pide r2, con r1 distinto a r2. Luego siempre es posible llegar al problema
+explicado en el inciso a), donde el agente libera r1, f1 lo toma, luego libera r2 y f2 lo toma,
+quedando todos atrapados en un deadlock.
