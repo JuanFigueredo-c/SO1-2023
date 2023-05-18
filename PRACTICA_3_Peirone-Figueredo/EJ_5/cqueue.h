@@ -5,6 +5,15 @@
 // out of empty queue or pushing to full queue
 // It doesnt copy nor destroy data stored in it
 #include <stdlib.h>
+#include <semaphore.h>
+
+struct _CQueue {
+  int top, last;
+  int size;
+  int full;
+  void** array;
+  sem_t lock;
+};
 
 typedef struct _CQueue* CQueue;
 

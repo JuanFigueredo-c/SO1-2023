@@ -10,14 +10,6 @@ static inline void quit(char *s) {
   abort();
 }
 
-struct _CQueue {
-  int top, last;
-  int size;
-  int full;
-  void** array;
-  sem_t lock;
-};
-
 CQueue cqueue_init(size_t size) {
   CQueue cqueue = malloc(sizeof(struct _CQueue));
   cqueue->array = malloc(sizeof(void*) * size);
@@ -91,4 +83,3 @@ void cqueue_destroy(CQueue cqueue) {
   sem_destroy(&cqueue->lock);
   free(cqueue);
 }
-
