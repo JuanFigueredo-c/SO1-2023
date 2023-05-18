@@ -3,11 +3,10 @@
 #include <stdlib.h>
 #include <pthread.h>
 #include <semaphore.h>
-#include "write_prefering.h" // modo "write prefering
-// #include "read_prefering.h // modo "read prefering"
+#include "read_write_lock.h"
 
 #define M 5
-#define N 5
+#define N 1
 #define ARRLEN 10240
 
 int arr[ARRLEN];
@@ -43,6 +42,7 @@ void * lector(void *arg) {
             printf("Lector %d, error de lectura\n", num);
         else
             printf("Lector %d, dato %d\n", num, v);
+
         rwl_unlock_readers(rw);
     }
     return NULL;
