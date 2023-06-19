@@ -1,0 +1,19 @@
+EJERCICIO 11 - PEIRONE - FIGUEREDO  
+
+El programa propuesto calcula los cuadrados de los primeros n*4 numeros naturales, donde
+n es la cantidad de procesos con los que se corre el programa.
+Se procede a describir el funcionamiento del programa.
+
+Como primer paso, al crearse el espacio MPI se separa al proceso origen, cuyo pid es 0.
+Este proceso creara un buffer con npr*numdat elementos, donde cada elemento corresponde al cuadrado
+de su indice en el arreglo. El numero npr refiere a la cantidad de procesos en el espacio MPI y
+numdat es una variable definida como 4.
+
+Luego, el proceso origen (de pid 0) creara un archivo "dat1" en el directorio en el cual escribirá todo
+el buffer previamente calculado con los cuadrados. 
+
+Luego de un sleep de tres segundos, todos los n procesos, incluyendo al proceso origen, abrirán el archivo "dat1"
+y se posicionarán en el archivo en la posición pid*numdat*sizeof(int). Desde esta posición leerán 4 numeros del archivo
+y los guardaran en un buffer privado llamado buf2 para luego imprimir el contenido de este.
+
+De este modo cada proceso leera 4 numeros, y estos iran desde (pid*4)^2 hasta (pid*4 + 3)^2
