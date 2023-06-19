@@ -1,0 +1,61 @@
+EJERCICIO 4 - PEIRONE - FIGUEREDO
+
+a) Tiempo de ejecución de multiplicación de matrices con distintos tamaños.    
+Los tiempos fueron medidos con la librería "timing.h" provista.
+Se utilizó un dispositivo con 8 cores, posibilitando hasta 8 procesos en paralelo.
+matrices 200 x 200:
+    El tiempo que se tardó en multiplicar de manera secuencial a 2 matrices de 200x200
+    tuvo un promedio de 0.03125 segundos.
+    Al implementar OpenMP para intentar paralelizar la multiplicación matricial, se consiguió
+    un tiempo promedio de 0.02979 segundos.
+    Se observa que no hubo una optimización demasiado representativa.
+    speedup = ts/tp = 0.03125/0.02979 = 1.049
+    eficiencia = sp/p = 1.049/8 = 0.1311
+
+matrices 500 x 500:
+    Al multiplicar matrices de 500x500 vemos que el tiempo en subió a un promedio de 
+    0.42188 segundos, más de 10 veces el tiempo que se tarda con matrices 200x200.
+    Implementando OpenMP para la paralelización del algoritmo, se consiguió un
+    tiempo promedio de 0.25126 segundos.
+    Comparando con el tiempo secuencial, se nota una mejora de casi la mitad del tiempo.
+    speedup = ts/tp = 0.42188 / 0.25126 = 1.679
+    eficiencia = sp/p = 1.679 / 8 = 0.2099
+
+matrices 1000 x 1000:
+    Por último, se observa que el tiempo que se tarda en multiplicar dos matrices 1000 x 1000
+    de manera secuencial es en promedio 3.57812 segundos, más de 100 veces más tiempo que en el
+    caso de matrices 200x200.   
+    Con la implementación de la paralelización del programa usando OpenMp se observó un tiempo 
+    promedio de 2.61467 segundos.
+    La mejora con el tiempo secuencial fue de casi 1 segundo.
+    speedup = ts/tp = 3.57812 / 2.61467 = 1.368
+    eficiencia = sp/p = 1.368 / 8 = 0.171
+
+b) Si, cambiando los índices podría llegar a encontrarse una mejora en el rendimiento.
+El algoritmo provisto realiza la siguiente operación para calcular la entrada de la matriz resultante
+                    C[i][j] += A[i][k] * B[k][j]
+En este caso, se fija i y j y se itera k hasta n.
+Sin embargo esto implica que se esté constantemente iterando sobre las filas de la matriz B, lo que implica 
+un salto en direcciones de memoria distantes (no contiguas como lo sería en la filas, se explica mejor en la
+respuesta al apartado c) por lo que no se podrá mantener una parte en caché para un rápido acceso y provocará 
+que el procesador tenga que buscar en memoria la dirección a acceder en cada iteración.
+Para solucionar esto se pueden cambiar los índices de la siguiente manera:   
+                    C[i][k] += A[i][j] * B[j][k]
+De este modo, se itera sobre las columnas de B, es decir se recorren las filas, por lo que se podrá aprovechar
+la cercanía de las direcciones de memoria dentro de una fila para conseguir un rendimiento más óptimo.
+
+c) Si, trasponiendo la matriz B si se puede conseguir un mejor rendimiento.
+Esto se debe a que cada fila de las matrices son arreglos de tamaño n, lo que implica que las
+entradas de la matriz que se encuentran en la misma fila, estarán almacenadas en direcciones de memoria
+contiguas, por lo que la iteración entre elementos de la misma fila (es decir cambiando la columna)
+a ellas será rápido ya que este arreglo estará en caché. Esto ocurre, por ejemplo con la matriz A 
+en el algoritmo de multiplicación propuesto en donde se fija la i-ésima fila y se itera sobre las n columnas. 
+Sin embargo, esta continuidad en la memoria solo ocurre entre elementos de una misma fila. Los arreglos que representan
+las filas en sí no necesariamente se encuentran próximas en la memoria. Esto provoca que para iterar sobre elementos
+de una columna (fijando la columna y cambiando la fila) el procesador debe buscar en memoria el
+arreglo de la siguiente fila. Esto evita que se pueda tener almacenados los valores en caché de modo que su 
+acceso es más rápido. Esto es lo que ocurre por ejemplo con la matriz B del algoritmo provisto, ya que se fija la columna j
+y se gira sobre las n  filas, buscando en memoria las direcciones de cada array correspondiente.
+Para evitar esto, se puede trasponer la matriz B, de modo que al momento de realizar la multiplicación, 
+la matriz B itere sobre elementos de un mismo arreglo, y por lo tanto el acceso a sus entradas es más rápido.
+
